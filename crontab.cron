@@ -1,0 +1,10 @@
+* * * * *      /usr/bin/php   /var/www/html/parklu_admin/artisan   send:mail 0 0
+* * * * *      /usr/bin/php   /var/www/html/parklu_admin/artisan   send:mail 2 0 7
+* 9-18 * * 1-5 /usr/bin/php   /var/www/html/parklu_admin/artisan   send:mail 0 '1-5'
+* 9-18 * * 1-5 /usr/bin/php   /var/www/html/parklu_admin/artisan   send:mail 0 '1-5' 7
+
+*/2 9-14 * * 1-5 /usr/bin/php /var/www/html/parklu_admin/artisan send:mail
+每2分钟 9-14点  1-5发送
+
+
+* * * * *  /usr/bin/php      /Users/qinfei/Sites/qinfei/artisan send:mail 0 0 0

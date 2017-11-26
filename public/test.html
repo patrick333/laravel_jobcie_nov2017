@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+
+    <div ng-app="myApp" ng-controller="control">
+        <input type="text" set-Focus ng-blur="setBlur()">
+        <button ng-click="getFocus()">孙爷爷我要去取芭蕉扇了</button>
+    </div>  
+
+<script type="text/javascript">     
+    //模型
+    var app = angular.module('myApp',[]);
+
+    //控制器
+    app.controller("control",function($scope){
+        $scope.isCome = false;     //判断大圣来了没
+        $scope.isFocus = false;        //判断是不是要取芭蕉扇
+
+        $scope.getFocus = function(){
+            $scope.isFocus = true; //大圣来了
+            $scope.isCome = true;  //要取芭蕉扇
+        };
+
+        $scope.setBlur = function(){
+            $scope.isFocus = false;//没人要来取芭蕉扇了
+        }
+    });
+
+    //自定义指令
+     app.directive('setFocus',[ function(){
+         return {
+             scope:false,
+             link:function(scope, element){                     
+                 scope.$watch("isFocus",function(newValue,oldValue, scope) {
+                     //大圣来了，且要取芭蕉扇
+                     if(newValue && scope.isCome){
+                         element[0].focus(); //获取焦点
+                         alert("猴哥，老牛不在家，我一介女子还不是你说什么我就照做，可你进入人家的身体也不打声招呼，进了就进了，还搞得我那么难受，求你别搞了，给，芭~~~蕉~~~扇！")
+                     }
+                }, true);;
+             }
+         };
+    }]);
+
+</script>
+</body> 
+</html>
