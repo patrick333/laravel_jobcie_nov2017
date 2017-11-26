@@ -169,12 +169,9 @@ return [
          */
         Maatwebsite\Excel\ExcelServiceProvider::class, //EXCEL 
         Intervention\Image\ImageServiceProvider::class, //Image 
-        Anchu\Ftp\FtpServiceProvider::class, //FTP
-        Barryvdh\DomPDF\ServiceProvider::class, //PDF
-        Stevenyangecho\UEditor\UEditorServiceProvider::class,//BAIDU EDITOR
-        Barryvdh\Debugbar\ServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        sngrl\SphinxSearch\SphinxSearchServiceProvider::class,
 
         /*
          * Application Service Providers...

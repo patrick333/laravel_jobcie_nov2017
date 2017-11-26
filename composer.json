@@ -14,6 +14,7 @@
         "laravel/tinker": "~1.0",
         "maatwebsite/excel": "^2.1",
         "overtrue/pinyin": "^3.0",
+        "sngrl/sphinxsearch": "dev-master",
         "spatie/string": "^2.2",
         "symfony/dom-crawler": "^3.3",
         "tymon/jwt-auth": "1.0.*@dev"
