@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use App\Tools\Functions;
+use App\Tools\ApiErrorResp;
+
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
@@ -25,47 +28,63 @@ class LoginController extends Controller
 
     public function postLogin(Request $request)
     {
-        return $this->sendFailedLoginResponse($request);
+        //return $this->sendFailedLoginResponse($request);
         //return $this->response->error("User Not Found...", 404);
         //return response()->json(['error' => 'User Not Found...'], 404);
+        //return response()->json(ApiErrorResp::responseBadRequest(), 400);
+        // $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
 
-        // $credentials = $request->only('email', 'password');
-        // try {
-        //     // attempt to verify the credentials and create a token for the user
-        //     if (! $token = JWTAuth::attempt($credentials)) {
-        //         return response()->json(['error' => 'invalid_credentials'], 401);
-        //     }
-        // } catch (JWTException $e) {
-        //     // something went wrong whilst attempting to encode the token
-        //     return response()->json(['error' => 'could_not_create_token'], 500);
+        // if($user && Hash::check($request->get('password'), $user->password)){
+        //     $token = JWTAuth::fromUser($user);
+            
+        //     $this->clearLoginAttempts($request);
+
+        //     return $this->response->array([
+        //         'token' => $token,
+        //         'status_code' => 200,
+        //         'message' => 'User Authenticated'
+        //     ]);
         // }
 
-        // // all good so return the token
-        // return response()->json(compact('token'));
-        // dd('1');
+        
+        $rData = new \stdClass;
+        if ($request->isMethod('post')) {
 
-        $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
+            $errors = Functions::_validateInput($request->all(), [
+                'email' => 'required|email|max:255',
+                'password' => 'required|min:1',
+            ]);
+            if (!empty($errors)) {
+                return Functions::_errorResponse($errors);
+            }
 
-        if($user && Hash::check($request->get('password'), $user->password)){
-            $token = JWTAuth::fromUser($user);
-            return $this->sendLoginResponse($request, $token);
+            $credentials = $request->only('email', 'password');
+            try {
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    $errors[] = 'invalid_credentials_401';
+                }
+            } catch (JWTException $e) {
+                Log::error($e->getMessage());
+                $errors[] = 'could_not_create_token_500';
+            }
+
+            if($errors)
+            {
+                return Functions::_errorResponse($errors);
+            }
+
+            if(compact('token')['token'])
+            {
+                $rData->message = 'success';
+            }
+            else
+            {
+                $rData->message = 'No change';
+            }
+
+            return Functions::_dataResponse($rData);
         }
-
-        return $this->sendFailedLoginResponse($request);
-    }
-
-    public function sendLoginResponse(Request $request, $token){
-        $this->clearLoginAttempts($request);
-
-        return $this->authenticated($token);
-    }
-
-    public function authenticated($token){
-        return $this->response->array([
-            'token' => $token,
-            'status_code' => 200,
-            'message' => 'User Authenticated'
-        ]);
+        return response()->json(ApiErrorResp::responseBadRequest(), 400); 
     }
 
     public function sendFailedLoginResponse(){

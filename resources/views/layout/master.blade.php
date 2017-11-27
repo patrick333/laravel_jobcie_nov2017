@@ -60,6 +60,7 @@ $.ajaxSetup({
 
 </head>
 <body ng-app="happyApp" id="main">
+<ng-tip></ng-tip>
 <div style="width:80%;margin:auto;"></div>
 @include('layout.head')
 

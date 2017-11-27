@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+ul,li{list-style:none}
+
+/**/
+.description{padding:0px 5px; float:left; line-height:22px;}
+.star{height:20px;width:120px;position:relative;background:url(star.png) repeat-x;cursor:pointer; float:left;}
+.star li{float:left;padding:0px;margin:0px}
+.star li a{display:block;width:24px;height:20px;overflow:hidden;text-indent:-9999px;position:absolute;z-index:5}
+.star li a:hover{background:url(star.png) 0 -25px repeat-x;z-index:3;left:0}
+.star a.one-star{left:0}
+.star a.one-star:hover{width:24px}
+.star a.two-stars{left:24px}
+.star a.two-stars:hover{width:48px}
+.star a.three-stars{left:48px}
+.star a.three-stars:hover{width:72px}
+.star a.four-stars{left:72px}
+.star a.four-stars:hover{width:96px}
+.star a.five-stars{left:96px}
+.star a.five-stars:hover{width:120px}
+.current-rating{background:url(star.png) 0 -25px repeat-x;position:absolute;height:20px;z-index:1;top:0;left:0}

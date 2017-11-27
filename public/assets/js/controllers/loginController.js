@@ -22,18 +22,18 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
 
     $scope.login = function(formData)
     {
+        loading('');
         var now = new Date();
         http.ajax('login?time='+ now.getFullYear() +'', 'POST', {data:formData}, function(response) {
             if (response.success) 
             {
-                loading('');
                 ngTip.tip([response.data.message],'success');
                 $scope.info = {};
                 $scope.info.success = true;
             }
             else
             {
-                $scope.errors = ['error'];
+                $scope.errors = [];
                 angular.forEach(response.errors, function(data,index,array){
                     $scope.errors.push(data)
                 });
