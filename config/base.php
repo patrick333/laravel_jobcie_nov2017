@@ -2,7 +2,7 @@
 
 return [
     'directory' => 'www',
-    'website' => '',
+    'website' => 'title',
     'group' => array(
         '0' => array(
                 'group_id' => 0,

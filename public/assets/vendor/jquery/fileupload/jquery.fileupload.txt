@@ -1,0 +1,59 @@
+/*
+    |--------------------------------------------------------------------------
+    | PIC UPLOAD
+    |--------------------------------------------------------------------------
+    */
+    $('#fileupload').fileupload({
+        url:"/file/upload/pics",//文件上传地址，当然也可以直接写在input的data-url属性内
+        dataType: 'json',
+        add: function (e, data) {
+            $.each(data.files, function (index, file) 
+            {
+                var type = ['image/bmp','image/gif','image/jpeg','image/jpg'];
+                if($.inArray(file.type, type) < 0)
+                {
+                    parent.alert_esc("Invalid File Type",120);
+                    return ;
+                }else if (file.size/1024 > 10240) {
+                    parent.alert_esc("File too big",120);
+                    return ;
+                }
+                else {loading('');data.submit();}
+            });
+        },
+        done: function (e, data) {
+            var data = data.result;
+            if (data.success) {
+                if(data.data['files']!='')
+                {
+                    $.each(data.data['files'], function (index, file) // i表示在data中的索引位置，n表示包含的信息的对象  
+                    {
+                        $scope.info.attachments.images.push({id: index,url: file });
+                        $scope.$apply();
+                    }); 
+                    $('#progress .bar').css('width','0%').html('');
+                }
+                else
+                {
+                    alert_esc('上传失败', 120);
+                }
+            }
+            else {
+                alert_esc(data.errors, 120);
+            }
+            hide_loading('');
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .bar').css('width',progress + '%').html(progress + '%');
+            console.log(progress + '%');
+        }
+    })
+    .on('fileuploadsubmit', function(event, data) { // 绑定一
+        data.formData = { uid: $scope.info.uid, collaboration_id: $scope.info.collaboration_id };
+    });
+
+    // 绑定二
+    // $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+    //     data.formData = { uid: $scope.info.uid, collaboration_id: $scope.info.collaboration_id };
+    // });

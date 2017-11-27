@@ -11,19 +11,9 @@
 |
 */
 
-// php artisan down
+Route::get('/', function () {
+    return view('index');
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Route::get('login',  ['middleware' => 'guest', 'as' => 'login', 'uses' => 'LoginController@getLogin']);

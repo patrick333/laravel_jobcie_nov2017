@@ -1,0 +1,11 @@
+.row {margin-top: 20px;}
+
+.form-group .ng-invalid {
+    border-color: #e9322d;
+    -webkit-box-shadow: 0 0 6px #f8b9b7;
+    -moz-box-shadow: 0 0 6px #f8b9b7;
+    box-shadow: 0 0 6px #f8b9b7;border-left: 6px solid #C00;
+}
+.error, .validation-invalid{color:#C00; padding:0px 0px;}
+.validation-valid {display:none;}
+.required{border:1px solid #cfdadd;border-left: 6px solid #cfdadd;}

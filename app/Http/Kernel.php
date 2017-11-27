@@ -62,9 +62,6 @@ class Kernel extends HttpKernel
 
         'jwt.admin' => \App\Http\Middleware\JWTadmin::class, //新增注册的中间件
 
-        //'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class, //现在不需要
-        //'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,  //现在不需要
-
         'login' => \App\Http\Middleware\AuthLoginCheck::class,
         'users' => \App\Http\Middleware\AuthUsersCheck::class,
         'admin' => \App\Http\Middleware\AuthAdminCheck::class,
