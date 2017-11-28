@@ -17,3 +17,8 @@ Route::get('/', function () {
 
 
 Route::get('login',  ['middleware' => 'guest', 'as' => 'login', 'uses' => 'LoginController@getLogin']);
+
+Route::group(['prefix' => 'home'], function() {
+    Route::get('/','UserController@getIndex');
+
+});

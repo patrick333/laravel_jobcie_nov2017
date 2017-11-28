@@ -13,6 +13,9 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
 	$scope.errors = {};
   	$scope.options = {};
     $scope.formData = {};
+
+    $scope.ctrl = {};
+    $scope.ctrl.location = '';
     
 
     $scope.init = function() 
@@ -27,9 +30,11 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
         http.ajax('login?time='+ now.getFullYear() +'', 'POST', {data:formData}, function(response) {
             if (response.success) 
             {
-                ngTip.tip([response.data.message],'success');
-                $scope.info = {};
-                $scope.info.success = true;
+                if($scope.ctrl.location == '')
+                {
+                    $scope.ctrl.location = '/home';
+                }
+                window.location.href = $scope.ctrl.location;
             }
             else
             {

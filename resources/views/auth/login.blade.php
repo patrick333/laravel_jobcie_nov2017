@@ -21,6 +21,7 @@
                 <div class="panel-body">
                   
                   	<ng-form name="fromLogin" class="form-horizontal">
+                  		<input type="hidden" name="location" value="{{Request::input('location')}}" ng-model="ctrl.location" ng-init="ctrl.location='{{Request::input('location')}}'">
 	                  	<div class="form-group">
 						    <label class="col-sm-4 control-label hidden-xs">E-Mail Address</label>
 						    <div class="col-md-6">
