@@ -1,1 +1,2 @@
 home
+{{ Session::get('token') }}

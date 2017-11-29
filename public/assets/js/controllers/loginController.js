@@ -48,6 +48,25 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
             hide_loading('');
         });
     }
+
+    //test
+    $scope.refresh = function()
+    {
+        loading('');
+        var now = new Date();
+        var params = {};
+        http.ajax('refresh?time='+ now.getFullYear() +'', 'POST', {data:params}, function(response) {
+            if (response.success) 
+            {
+                
+            }
+            else
+            {
+                
+            }
+            hide_loading('');
+        });
+    }
     
 
 });

@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+             \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -61,10 +61,12 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'cors' => \App\Http\Middleware\CORS::class,
 
-        'jwt.admin' => \App\Http\Middleware\JWTadmin::class, //新增注册的中间件
+        'jwt' => \App\Http\Middleware\JWTbasic::class, //新增注册的中间件
+        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
 
         'login' => \App\Http\Middleware\AuthLoginCheck::class,
-        'users' => \App\Http\Middleware\AuthUsersCheck::class,
+        'user' => \App\Http\Middleware\AuthUserCheck::class,
         'admin' => \App\Http\Middleware\AuthAdminCheck::class,
     ];
 }

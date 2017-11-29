@@ -14,6 +14,7 @@ class UserController extends Controller
 
     public function getIndex(Request $request)
     {
+    	dd($request->session()->get('token'));
         return view('home.index');
     }
 }
