@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('title')
-    Create Your Account
+    password reset
 @stop
 
 @section('file')
@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading" ng-click="refresh()">Create Your Account</div>
+                <div class="panel-heading" ng-click="refresh()">Reset Password</div>
 
                 <div class="panel-body">
                   
@@ -29,24 +29,9 @@
 						    </div>
 						</div>
 
-						<div class="form-group">
-						    <label class="col-sm-4 control-label hidden-xs">Password</label>
-						    <div class="col-md-6">
-						        <input name="password" ng-model="formData.password" type="password" class="form-control" placeholder="Password" validator="required" required-error-message="Required" required-success-message=".">
-						    </div>
-						</div>
-
-						<div class="form-group">
-						    <label class="col-sm-4 control-label hidden-xs">Confirm Password</label>
-						    <div class="col-md-6">
-						        <input name="password" ng-model="formData.password" type="password" class="form-control" placeholder="Password" validator="required" required-error-message="Required" required-success-message=".">
-						    </div>
-						</div>
-
-						
 	                    <div class="form-group">
 	                        <div class="col-md-8 col-md-offset-4">
-	                        	<a class="btn btn-primary pull-center" validation-submit="fromLogin" ng-click="login(formData)"> Sign Up </a>
+	                        	<a class="btn btn-primary pull-center" validation-submit="fromLogin" ng-click="login(formData)"> Send Password Reset  </a>
 	                        </div>
 	                    </div>
 					</ng-form>

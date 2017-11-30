@@ -50,7 +50,7 @@
 	                        <div class="col-md-8 col-md-offset-4">
 	                        	<a class="btn btn-primary pull-center" validation-submit="fromLogin" ng-click="login(formData)"> Login </a>
 
-	                            <a class="btn btn-link" href="">
+	                            <a class="btn btn-link" href="{{ url('password/reset') }}">
 	                                Forgot Your Password?
 	                            </a>
 	                        </div>

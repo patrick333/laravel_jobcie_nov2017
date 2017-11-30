@@ -20,6 +20,11 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function getPasswordReset()
+    {
+        return view('auth.password.reset');
+    }
+
     public function getSignup(Request $request)
     {
         return view('auth.signup');
@@ -30,7 +35,7 @@ class LoginController extends Controller
         // delete api token
         //$result = $this->_post(url('/api/logout'), $request->session()->get('token'));
         $result = $this->_get(url('/api/logout'), $request->session()->get('token'));
-        
+
         // delete web token
         $request->session()->flush();
         return Redirect::route('login');
