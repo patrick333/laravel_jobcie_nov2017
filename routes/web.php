@@ -16,9 +16,11 @@ Route::get('/', function () {
 });
 
 
-Route::get('login',  ['middleware' => 'guest', 'as' => 'login', 'uses' => 'LoginController@getLogin']);
+Route::get('login',  ['middleware' => 'validate:login','as' => 'login', 'uses' => 'LoginController@getLogin']);
+Route::get('signup', ['middleware' => 'validate:login','as' => 'signup', 'uses' => 'LoginController@getSignup']);
+Route::get('logout', 'LoginController@getLogout');
 
-Route::group(['prefix' => 'home'], function() {
+Route::group(['middleware' => 'validate:user', 'prefix' => 'home'], function() {
     Route::get('/','UserController@getIndex');
 
 });

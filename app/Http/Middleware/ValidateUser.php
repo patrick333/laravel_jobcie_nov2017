@@ -9,7 +9,7 @@ use Redirect;
 use Auth;
 use App\Tools\ApiErrorResp;
 
-class AuthUsersCheck 
+class ValidateUser 
 {
 	/**
      * The Guard implementation.
@@ -31,21 +31,27 @@ class AuthUsersCheck
 
     /**
      * Handle an incoming request.
-     * 保护路由 'middleware' => 'user', 验证是否登录 //前台
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $role='')
     {
-        if ($this->auth->guest()) {
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest('/login');
+        if($role == 'login')
+        {
+            if ($request->session()->has('token')) 
+            {
+                return redirect('/home'); 
             }
         }
-
+        if($role == 'user')
+        {
+            if (!$request->session()->has('token')) 
+            {
+                return Redirect::route('login','location='.url($_SERVER['REQUEST_URI']));
+            }
+        }
+        
         return $next($request);
     }
 }

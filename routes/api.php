@@ -20,10 +20,11 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version(['v1'], function ($api) {
-	$api->group(['middleware' => 'jwt:session' ,'namespace' => 'App\Http\Controllers\Api'], function ($api){
+	$api->group(['middleware' => ['web','jwt:session'] ,'namespace' => 'App\Http\Controllers\Api'], function ($api){
 
 		$api->post('login',     'Auth\LoginController@postLogin');
 		$api->post('refresh',   'Auth\LoginController@postRefershToken');
+		$api->get('logout',    'Auth\LoginController@postLogout');
 		$api->post('logout',    'Auth\LoginController@postLogout');
 		$api->post('register',  'Auth\RegisterController@postRegister');
 
