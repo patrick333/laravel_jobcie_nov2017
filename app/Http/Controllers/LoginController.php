@@ -28,11 +28,35 @@ class LoginController extends Controller
     public function getLogout(Request $request)
     {
         // delete api token
-        $result = $this->_post(url('/api/logout'), '');
-
+        //$result = $this->_post(url('/api/logout'), $request->session()->get('token'));
+        $result = $this->_get(url('/api/logout'), $request->session()->get('token'));
+        
         // delete web token
         $request->session()->flush();
         return Redirect::route('login');
+    }
+
+    private function _get($url, $token) {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$token
+        ));
+        
+        $response = curl_exec($ch);
+
+        $result = $this->_check_curl_response($ch);
+        if ($result === false) {
+            //throw new \Exception($response);
+        }
+
+        $data = json_decode($response);
+        return $data;
     }
 
     private function _post($url, $post_data, $token=false) {
