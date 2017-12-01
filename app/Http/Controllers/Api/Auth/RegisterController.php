@@ -11,41 +11,71 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use App\Tools\Functions;
+use App\Tools\ApiErrorResp;
+
 class RegisterController extends Controller
 {
     use RegistersUsers;
 
     public function postRegister(Request $request)
-    {
-        //dd($request->all());
-        $validator = Validator::make($request->all(),[
-            'username' => 'required|unique:user',
-            'email' => 'required|email|max:255|unique:user',
-            'password' => 'required|min:6',
-        ]);
-        if($validator->fails()){
-            throw new StoreResourceFailedException("Validation Error", $validator->errors());
-        }
+    {  
+        $rData = new \stdClass;
+        if ($request->isMethod('post')) {
 
-        $user = User::create(User::create_array($request));
-
-        if($user){
-
-            $token = JWTAuth::fromUser($user);
-
-            //通过用户获取token
-            //$user = JWTAuth::toUser( $tokenStr );
-
-            return $this->response->array([
-                "token" => $token,
-                "message" => "User created",
-                "status_code" => 201
+            $errors = Functions::_validateInput($request->all(), [
+                'username' => 'required|unique:user',
+                'email' => 'required|email|max:255|unique:user',
+                'password' => 'required|min:1',
             ]);
+
+            $errors = $this->_CheckValue($request);
+
+            if($errors)
+            {
+                return Functions::_errorResponse($errors);
+            }
+
+            $user = User::create(User::create_array($request));
+
+            if($user)
+            {
+                $token = JWTAuth::fromUser($user);
+            }
+
+            if($token)
+            {
+                $request->session()->put('token', $token);
+                $rData->message = 'success';
+                $rData->token = $token;
+
+                return Functions::_dataResponse($rData);
+            }
+            return Functions::_errorResponse('fail');
         }
-        else
+        return response()->json(ApiErrorResp::responseBadRequest(), 400);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Check USERNAME AND EMAIL 
+    |--------------------------------------------------------------------------
+    */
+    public function _CheckValue(Request $request)
+    {
+        $errors = array();
+        $count_username = User::where('username', trim_null_rl($request->input('username')))->count();
+        if($count_username)
         {
-            return $this->response->error("User Not Found...", 404);
+            $errors[] = ' username_has_been_used';
         }
+        $count_email = User::where('email', trim_null_rl($request->input('email')))->count();
+        if($count_email)
+        {
+            $errors[] = 'email_has_been_used';
+        }
+
+        return $errors;
     }
 
 }

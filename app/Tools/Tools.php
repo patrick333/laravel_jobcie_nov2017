@@ -66,6 +66,62 @@ if(! function_exists('request_by_curl'))
     }  
 }
 
+/*
+|--------------------------------------------------------------------------
+| 获取客户端真实IP地址
+|--------------------------------------------------------------------------
+*/
+if (! function_exists('getIPaddress'))
+{
+    function getIPaddress()
+    {
+        $IPaddress='';
+        if (isset($_SERVER)){
+            if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
+                $IPaddress = $_SERVER["HTTP_X_FORWARDED_FOR"];
+            } else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+                $IPaddress = $_SERVER["HTTP_CLIENT_IP"];
+            } else {
+                $IPaddress = $_SERVER["REMOTE_ADDR"];
+            }
 
+        } else {
+            if (getenv("HTTP_X_FORWARDED_FOR")){
+                $IPaddress = getenv("HTTP_X_FORWARDED_FOR");
+            } else if (getenv("HTTP_CLIENT_IP")) {
+                $IPaddress = getenv("HTTP_CLIENT_IP");
+            } else {
+                $IPaddress = getenv("REMOTE_ADDR");
+            }
+        }
+        return $IPaddress;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Similar to core "trim" but returns null instead of an empty string. When an array is passed, all elements get processed recursively.
+|  * @param string|array $data
+|  * @param null|string  $character_mask
+|  *
+|  * @return array|null|string  去掉左右空格
+|--------------------------------------------------------------------------
+*/
+if (! function_exists('trim_null_rl'))
+{
+    function trim_null_rl($data, $character_mask = null)
+    {
+        if (!is_array($data)) {
+            return null === $character_mask ? trim($data) : trim($data, $character_mask) ?: null;
+        }
+
+        return array_map(
+            function ($value) use ($character_mask) {
+                return trim_null_rl($value, $character_mask);
+            },
+            $data
+        );
+    }
+}  
 
 

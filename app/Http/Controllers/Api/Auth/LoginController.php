@@ -39,6 +39,7 @@ class LoginController extends Controller
         // $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
         // if($user && Hash::check($request->get('password'), $user->password)){
         //     $token = JWTAuth::fromUser($user);
+        //     $user = JWTAuth::toUser($token);
         //     $this->clearLoginAttempts($request);
         //     return $this->response->array([
         //         'token' => $token,
@@ -63,7 +64,7 @@ class LoginController extends Controller
                 'password'=>$request->input('password'),
             ];
             $conditions_username = [
-                'name'=>$request->input('email'),
+                'username'=>$request->input('email'),
                 'password'=>$request->input('password'),
             ];
 
@@ -93,13 +94,10 @@ class LoginController extends Controller
                 $request->session()->put('token', $token);
                 $rData->message = 'success';
                 $rData->token = $token;
-            }
-            else
-            {
-                $rData->message = '';
-            }
 
-            return Functions::_dataResponse($rData);
+                return Functions::_dataResponse($rData);
+            }
+            return Functions::_errorResponse('fail');
         }
         return response()->json(ApiErrorResp::responseBadRequest(), 400); 
     }
@@ -133,12 +131,9 @@ class LoginController extends Controller
             $request->session()->put('token', $token);
             $rData->message = 'success';
             $rData->token = $token;
+            return Functions::_dataResponse($rData);
         }
-        else
-        {
-            $rData->message = '';
-        } 
-        return Functions::_dataResponse($rData);
+        return Functions::_errorResponse('fail');
     }
 
     public function postLogout(Request $request)
