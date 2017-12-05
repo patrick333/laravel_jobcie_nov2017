@@ -22,11 +22,14 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version(['v1'], function ($api) {
 	$api->group(['middleware' => ['web','jwt:session'] ,'namespace' => 'App\Http\Controllers\Api'], function ($api){
 
-		$api->post('login',     'Auth\LoginController@postLogin');
-		$api->post('refresh',   'Auth\LoginController@postRefershToken');
-		$api->get('logout',    'Auth\LoginController@postLogout');
-		$api->post('logout',    'Auth\LoginController@postLogout');
-		$api->post('register',  'Auth\RegisterController@postRegister');
+		$api->post('login',    	     'Auth\LoginController@postLogin');
+		$api->post('refresh',   	 'Auth\LoginController@postRefershToken');
+		$api->get('logout',    	     'Auth\LoginController@postLogout');
+		$api->post('logout',    	 'Auth\LoginController@postLogout');
+		$api->post('register',  	 'Auth\RegisterController@postRegister');
+		$api->post('password/reset', 'Auth\RegisterController@postReset');
+		$api->post('password/verify','Auth\RegisterController@postVerify');
+
 
 		$api->get('user', ['middleware' => 'jwt.auth', 'uses' => 'UserController@getIndex' ]);
 

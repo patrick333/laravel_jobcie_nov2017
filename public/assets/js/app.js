@@ -35,18 +35,18 @@ app.factory('http', function($http) {
         })
         .error(function(data, status, headers, config) {
             if (status == 401) {
-                alert_info();
+                //alert_info();
                 //alert(data.error.message);
                 return;
                 location.reload();
             }
             if (status == 400) {
-                alert_info();
+                //alert_info();
                 //alert(data.error.message);
                 return;
             }
             if (status == 500) {
-                alert_info('500','请刷新重试');
+                //alert_info('500','请刷新重试');
                 //alert('500');
                 return;
                 //location.reload();

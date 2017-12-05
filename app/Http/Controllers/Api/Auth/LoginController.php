@@ -99,41 +99,46 @@ class LoginController extends Controller
             }
             return Functions::_errorResponse('fail');
         }
-        return response()->json(ApiErrorResp::responseBadRequest(), 400); 
+        abort(400, 'Bad request, wrong method.'); 
     }
 
     public function postRefershToken(Request $request)
     {
-        if (! JWTAuth::parser()->setRequest($request)->hasToken()) {
-            throw new UnauthorizedHttpException('jwt-auth', 'Token not provided');
-        }
-
-        $token = Auth::guard('api')->refresh();
-
-        //or
-        // try {  
-        //     $old_token = JWTAuth::getToken();  
-        //     $token = JWTAuth::refresh($old_token);
-        //     JWTAuth::invalidate($old_token);  
-        // } catch (TokenExpiredException $e) {  
-        //     throw new AuthException(  
-        //         Constants::get('error_code.refresh_token_expired'),  
-        //         trans('errors.refresh_token_expired'), $e);  
-        // } catch (JWTException $e) {  
-        //     throw new AuthException(  
-        //         Constants::get('error_code.token_invalid'),  
-        //         trans('errors.token_invalid'), $e);  
-        // }  
-
         $rData = new \stdClass;
-        if($token)
+        if ($request->isMethod('post')) 
         {
-            $request->session()->put('token', $token);
-            $rData->message = 'success';
-            $rData->token = $token;
-            return Functions::_dataResponse($rData);
+            if (! JWTAuth::parser()->setRequest($request)->hasToken()) {
+                throw new UnauthorizedHttpException('jwt-auth', 'Token not provided');
+            }
+
+            $token = Auth::guard('api')->refresh();
+
+            //or
+            // try {  
+            //     $old_token = JWTAuth::getToken();  
+            //     $token = JWTAuth::refresh($old_token);
+            //     JWTAuth::invalidate($old_token);  
+            // } catch (TokenExpiredException $e) {  
+            //     throw new AuthException(  
+            //         Constants::get('error_code.refresh_token_expired'),  
+            //         trans('errors.refresh_token_expired'), $e);  
+            // } catch (JWTException $e) {  
+            //     throw new AuthException(  
+            //         Constants::get('error_code.token_invalid'),  
+            //         trans('errors.token_invalid'), $e);  
+            // }  
+
+            $rData = new \stdClass;
+            if($token)
+            {
+                $request->session()->put('token', $token);
+                $rData->message = 'success';
+                $rData->token = $token;
+                return Functions::_dataResponse($rData);
+            }
+            return Functions::_errorResponse('fail');
         }
-        return Functions::_errorResponse('fail');
+        abort(400, 'Bad request, wrong method.'); 
     }
 
     public function postLogout(Request $request)

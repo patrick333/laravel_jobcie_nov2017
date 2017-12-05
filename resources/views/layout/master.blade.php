@@ -43,6 +43,9 @@
 
 	<script src="{{ asset('assets/js/app.js') }}" type="text/javascript" ></script>
 	<script src="{{ asset('assets/js/index.js') }}" type="text/javascript" ></script>
+	<script src="{{ asset('assets/js/alert.js') }}" type="text/javascript"></script>
+  	<script src="{{ asset('assets/js/alert_tip.js') }}" type="text/javascript"></script>
+
 
 	<link href="{{ asset('assets/css/normalize.css') }}" rel="stylesheet" >
 	<link href="{{ asset('assets/css/simple-line-icons.css') }}" rel="stylesheet" >

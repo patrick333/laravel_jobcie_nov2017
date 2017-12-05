@@ -11,6 +11,7 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
     |--------------------------------------------------------------------------
     */
 	$scope.errors = {};
+    $scope.ver = '2018';
   	$scope.options = {};
     $scope.formData = {};
 
@@ -31,14 +32,22 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
 
     $scope.init = function() 
     {
-        
+        $scope.formFindPassword.token = getQueryString('token')
+        if(getQueryString('token') != null)
+        {
+            http.ajax('password/token?ver='+ $scope.ver +'', 'GET', {}, function(response) {
+            if (response.success) {
+                    $scope.ctrl.send_email = true;
+                    $scope.formFindPassword.email = response.data.email;
+                }
+            }); 
+        }
     }
 
     $scope.login = function(formData)
     {
         loading('');
-        var now = new Date();
-        http.ajax('login?time='+ now.getFullYear() +'', 'POST', {data:formData}, function(response) {
+        http.ajax('login?ver='+ $scope.ver +'', 'POST', {data:formData}, function(response) {
             if (response.success) 
             {
                 if($scope.ctrl.location == '')
@@ -54,7 +63,6 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
                     $scope.errors.push(data)
                 });
                 ngTip.tip($scope.errors,'danger');
-                //showMassage('' , $scope.errors);
             }
             hide_loading('');
         });
@@ -69,7 +77,7 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
         params.email = $scope.formRegData.email;
         params.password = $scope.formRegData.password;
 
-        http.ajax('register?time='+ now.getFullYear() +'', 'POST', {data:params}, function(response) {
+        http.ajax('register?ver='+ $scope.ver +'', 'POST', {data:params}, function(response) {
             if (response.success) 
             {
                 if($scope.ctrl.location == '')
@@ -85,7 +93,6 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
                     $scope.errors.push(data)
                 });
                 ngTip.tip($scope.errors,'danger');
-                //showMassage('' , $scope.errors);
             }
             hide_loading('');
         });
@@ -93,17 +100,38 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
     
     $scope.resetPassword = function()
     {
-        $scope.ctrl.send_email = true;
-        alert('');
-        return ;
-
         loading('');
         var now = new Date();
         var params = {};
         params.email = $scope.formFindPassword.email; 
-        params.password = $scope.formFindPassword.newPassword;
+        params.password = $scope.formFindPassword.password;
 
-        http.ajax('register?time='+ now.getFullYear() +'', 'POST', {data:params}, function(response) {
+        http.ajax('password/reset?ver='+ $scope.ver +'', 'POST', {data:params}, function(response) {
+            if (response.success) 
+            {
+                window.location.href = window.location.href+'/?token='+response.data.token;
+            }
+            else
+            {
+                $scope.errors = [];
+                angular.forEach(response.errors, function(data,index,array){
+                    $scope.errors.push(data)
+                });
+                ngTip.tip($scope.errors,'danger');
+            }
+            hide_loading('');
+        });
+    }
+
+    $scope.verifyPassword = function()
+    {
+        loading('');
+        var now = new Date();
+        var params = {};
+        params.token = $scope.formFindPassword.token;
+        params.code = $scope.formFindPassword.code; 
+
+        http.ajax('password/verify?ver='+ $scope.ver +'', 'POST', {data:params}, function(response) {
             if (response.success) 
             {
                 if($scope.ctrl.location == '')
@@ -119,16 +147,9 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
                     $scope.errors.push(data)
                 });
                 ngTip.tip($scope.errors,'danger');
-                //showMassage('' , $scope.errors);
             }
             hide_loading('');
         });
-    }
-
-    $scope.verifyPassword = function(formData)
-    {
-        alert('');
-        return ;
     }
 
 });
