@@ -139,6 +139,7 @@ class RegisterController extends Controller
 
             $check_code = UserPasswordResets::where('token', trim_null_rl($request->input('token')))
                                             ->where('code', trim_null_rl($request->input('code')))
+                                            ->where('status','>=','2')
                                             ->first();
 
             if(empty($check_code))
@@ -167,6 +168,31 @@ class RegisterController extends Controller
                     $rData->token = $token;
                     return Functions::_dataResponse($rData);
                 }
+            }
+
+            return Functions::_errorResponse('fail');
+        }
+        abort(400, 'Bad request, wrong method.');
+    }
+
+    public function getEmailByToken(Request $request)
+    {
+        $rData = new \stdClass;
+        if ($request->isMethod('get')) {
+
+            $errors = Functions::_validateInput($request->all(), [
+                'token' => 'required',
+            ]);
+
+            if (!empty($errors)) {
+                return Functions::_errorResponse($errors);
+            }
+
+            $email = UserPasswordResets::where('token',$request->input('token'))->value('email');
+            if(!empty($email))
+            {
+                $rData->email = $email;
+                return Functions::_dataResponse($rData);
             }
 
             return Functions::_errorResponse('fail');

@@ -29,6 +29,7 @@ $api->version(['v1'], function ($api) {
 		$api->post('register',  	 'Auth\RegisterController@postRegister');
 		$api->post('password/reset', 'Auth\RegisterController@postReset');
 		$api->post('password/verify','Auth\RegisterController@postVerify');
+		$api->get('password/email',  'Auth\RegisterController@getEmailByToken');
 
 
 		$api->get('user', ['middleware' => 'jwt.auth', 'uses' => 'UserController@getIndex' ]);

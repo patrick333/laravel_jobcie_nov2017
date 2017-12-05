@@ -35,7 +35,7 @@ app.controller('loginController', function($scope, $http, $timeout, http, ajaxRe
         $scope.formFindPassword.token = getQueryString('token')
         if(getQueryString('token') != null)
         {
-            http.ajax('password/token?ver='+ $scope.ver +'', 'GET', {}, function(response) {
+            http.ajax('password/email?token='+ $scope.formFindPassword.token +'', 'GET', {}, function(response) {
             if (response.success) {
                     $scope.ctrl.send_email = true;
                     $scope.formFindPassword.email = response.data.email;
