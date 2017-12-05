@@ -26,3 +26,17 @@ Route::group(['prefix' => 'home', 'middleware' => 'validate:user'], function() {
     Route::get('/','UserController@getIndex');
 
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| TEST
+|--------------------------------------------------------------------------
+*/
+Route::group(['prefix' => 'test'], function() {
+    Route::get('email/password_resets', function () {
+	    return new App\Mail\PasswordResets();
+	});
+});
+
+

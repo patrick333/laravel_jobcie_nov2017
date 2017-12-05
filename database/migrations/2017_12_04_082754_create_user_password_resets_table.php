@@ -20,6 +20,7 @@ class CreateUserPasswordResetsTable extends Migration
             $table->string('password');
             $table->string('code', 10)->nullable();
             $table->integer('status');
+            $table->string('msg', 255);
             $table->integer('expire_at')->nullable();
             $table->integer('created_at')->nullable();
             $table->integer('updated_at')->nullable();

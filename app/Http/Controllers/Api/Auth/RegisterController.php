@@ -108,6 +108,7 @@ class RegisterController extends Controller
                     'code' => UserPasswordResets::_genCode(),
                     'expire_at' => $current_time + 600, //10 min;
                     'status' => 0,
+                    'created_at' => $current_time,
                     'updated_at' => $current_time,
                 ];
 
@@ -139,6 +140,7 @@ class RegisterController extends Controller
 
             $check_code = UserPasswordResets::where('token', trim_null_rl($request->input('token')))
                                             ->where('code', trim_null_rl($request->input('code')))
+                                            ->where('status','>=','0')
                                             ->where('status','<=','2')
                                             ->first();
 
