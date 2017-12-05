@@ -139,7 +139,7 @@ class RegisterController extends Controller
 
             $check_code = UserPasswordResets::where('token', trim_null_rl($request->input('token')))
                                             ->where('code', trim_null_rl($request->input('code')))
-                                            ->where('status','>=','2')
+                                            ->where('status','<=','2')
                                             ->first();
 
             if(empty($check_code))
